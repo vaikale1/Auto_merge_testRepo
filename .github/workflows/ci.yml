@@ -18,7 +18,6 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           merge-method: merge
-          required-approvals: 1
           
       - name: Merge Pull request
         uses: juliangruber/merge-pull-request-action@v1
