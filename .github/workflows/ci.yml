@@ -29,12 +29,6 @@ jobs:
             This is to show automatic PR creation
           token: ${{ secrets.GH_TOKEN }}
           delete-branch: true
-     
-      - name: Approve Pull Request
-        uses: juliangruber/approve-pull-request-action@v1
-        with:
-          github-token: ${{ secrets. GH_TOKEN }}
-          number: ${{ steps.demo-1.outputs.pull-request-number}}
           
       - name: Merge Pull request
         uses: juliangruber/merge-pull-request-action@v1
