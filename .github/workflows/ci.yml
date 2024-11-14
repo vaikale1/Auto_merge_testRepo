@@ -1,0 +1,21 @@
+name: Auto Merge Pull Request
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, labeled]
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Auto-merge if conditions met
+        uses: pascalgn/automerge-action@v0.15.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: merge  # Can be 'merge', 'squash', or 'rebase'
+          required_approvals: 1  # Number of approvals required
+          # You can also specify the status checks you want to be passed before merge
+          # required_status_checks: 'ci/test'
