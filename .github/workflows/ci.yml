@@ -7,22 +7,24 @@ jobs:
   updateAuthor:
     runs-on: ubuntu-latest
     steps:
-      - name: checking out code 
+      - name: Checkout code
         uses: actions/checkout@v3
      
-      - name: extract git commit data
+      - name: Extract git commit data
+        id: extract_commit_data
         uses: rlespinasse/git-commit-data-action@v1.x
         
       - name: Enable Auto-Merge
+        id: enable_automerge
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          number: ${{ steps.demo-1.outputs.pull-request-number}}
+          pull-request-number: ${{ steps.extract_commit_data.outputs.pull-request-number }}
           merge-method: merge
           
-      - name: Merge Pull request
+      - name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GH_TOKEN }}
-          number: ${{ steps.demo-1.outputs.pull-request-number}}
-          method: merge 
+          number: ${{ steps.extract_commit_data.outputs.pull-request-number }}
+          method: merge
