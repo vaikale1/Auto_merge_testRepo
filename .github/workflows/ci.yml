@@ -24,4 +24,4 @@ jobs:
         with:
           github-token: ${{ secrets.GH_TOKEN }}
           number: ${{ steps.demo-1.outputs.pull-request-number}}
-          method: merge
+          method: merge 
