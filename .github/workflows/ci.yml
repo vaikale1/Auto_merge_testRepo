@@ -13,18 +13,28 @@ jobs:
       - name: Extract git commit data
         id: extract_commit_data
         uses: rlespinasse/git-commit-data-action@v1.x
-        
+
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          commit-message: "Automatic PR creation"
+          branch: "auto-pr-branch"
+          title: "Automatic PR"
+          body: "This PR was created automatically"
+
       - name: Enable Auto-Merge
         id: enable_automerge
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          pull-request-number: ${{ steps.extract_commit_data.outputs.pull-request-number }}
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
           merge-method: merge
           
       - name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GH_TOKEN }}
-          number: ${{ steps.extract_commit_data.outputs.pull-request-number }}
+          number: ${{ steps.create_pr.outputs.pull-request-number }}
           method: merge
