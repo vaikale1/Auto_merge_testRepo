@@ -10,10 +10,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Update to v3
+        uses: actions/checkout@v3  # Latest version
 
       - name: Auto-merge if conditions met
-        uses: pascalgn/automerge-action@v0.16.4   # Update to the latest version
+        uses: pascalgn/automerge-action@v0.16.4  # Ensure using the correct action version
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # This is the token GitHub automatically provides
-          merge_method: merge  # This is a valid input for specifying how the PR should be merged
+          required_approvals: 1  # Specify how many approvals are needed
