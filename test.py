@@ -1,3 +1,3 @@
-printf("hello world neha")
+i = "ahen dlrow olleh"
 
-
+print(i[::-1])
