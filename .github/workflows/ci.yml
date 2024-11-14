@@ -26,11 +26,12 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - id: automerge
-        name: automerge
-        uses: "pascalgn/automerge-action@v0.16.4"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+ 
+      - name: Enable Auto-Merge
+        uses: peter-evans/enable-pull-request-automerge@v2
         with:
-          MERGE_METHOD: merge
-          MERGE_REQUIRED_APPROVALS: 1
+          token: ${{ secrets.GH_TOKEN }}
+          merge-method: merge
+          required-approvals: 1
