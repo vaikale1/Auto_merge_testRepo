@@ -1,37 +1,17 @@
-name: Auto Merge on Approval
- 
+name: Auto-Merge
 on:
-  pull_request:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-      - unlocked
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
-  status: {}
+  pull_request_target:
+    types: [labeled]
  
 jobs:
-  automerge:
+  enable-auto-merge:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
  
-      - name: Enable Auto-Merge
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          merge-method: merge
-          required-approvals: 1
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - uses: alexwilson/enable-github-automerge-action@main
+      with:
+        github-token: "${{ secrets.GH_TOKEN }}"
+        required-approvals: 1
