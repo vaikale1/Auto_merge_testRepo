@@ -1,17 +1,44 @@
-name: Auto-Merge
+name: Demo to create automatic PR
 on:
-  pull_request_target:
-    types: [labeled]
- 
+  push:
+    branches:
+      - main
 jobs:
-  enable-auto-merge:
+  updateAuthor:
     runs-on: ubuntu-latest
- 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      
-    - uses: alexwilson/enable-github-automerge-action@main
-      with:
-        github-token: "${{ secrets.GH_TOKEN }}"
-        required-approvals: 1
+      - name: checking out code 
+        uses: actions/checkout@v3
+     
+      - name: extract git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+     
+      - name: Update author information
+        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
+     
+      - name: Raise PR
+        id: demo-1
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: "auto-pr-branch" 
+          base: main
+          title: "demo for auto pr"
+          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME}} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}"> 
+          author: $env.GIT_COMMIT_AUTHOR_NAME}} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}"> 
+          body:
+            This is to show automatic PR creation
+          token: ${{ secrets.GH_TOKEN }}
+          delete-branch: true
+     
+      - name: Approve Pull Request
+        uses: juliangruber/approve-pull-request-action@vi
+        with:
+          github-token: ${{ secrets. GH_TOKEN }}
+          number: ${{ steps.demo-1.outputs.pull-request-number}}
+          
+      - name: Merge Pull request
+        uses: juliangruber/merge-pull-request-action@vi
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          number: ${{ steps.demo-1.outputs.pull-request-number}}
+          method: merge
