@@ -7,12 +7,15 @@ on:
 jobs:
   automerge:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Latest version
+        uses: actions/checkout@v3
 
       - name: Auto-merge if conditions met
-        uses: pascalgn/automerge-action@v0.16.4  # Ensure using the correct action version
+        uses: pascalgn/automerge-action@v0.16.4
         with:
-          required_approvals: 1  # Specify how many approvals are needed
+          github_token: ${{ secrets.GH_TOKEN }}
+          merge_method: merge  # Can be 'merge', 'squash', or 'rebase'
+          required_approvals: 1  # Number of approvals required
+          # You can also specify the status checks you want to be passed before merge
+          # required_status_checks: 'ci/test'
